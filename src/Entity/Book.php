@@ -16,14 +16,15 @@ class Book
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['book:read','reservation:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['book:read'])]
+    #[Groups(['book:read','reservation:read','user:read'])]
     private ?string $title = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['book:read'])]
+    #[Groups(['book:read','reservation:read'])]
     private ?string $autor = null;
 
     #[ORM\Column(length: 255)]
@@ -37,6 +38,7 @@ class Book
     private ?\DateTimeInterface $PublishingDate = null;
 
     #[ORM\Column]
+
     private ?bool $isReserved = null;
 
     public function getId(): ?int

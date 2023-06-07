@@ -8,9 +8,10 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: ReservationRepository::class)]
-#[ApiResource]
+#[ApiResource(normalizationContext: ['groups' => ['reservation:read']])]
 class Reservation
 {
     #[ORM\Id]
@@ -18,19 +19,24 @@ class Reservation
     #[ORM\Column]
     private ?int $id = null;
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[Groups(['reservation:read','book:read'])]
     private ?\DateTimeInterface $returnDateInitial = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[Groups(['reservation:read','book:read'])]
     private ?\DateTimeInterface $loanDate = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    #[Groups(['reservation:read'])]
     private ?\DateTimeInterface $reelReturnDate = null;
 
     #[ORM\ManyToMany(targetEntity: Book::class, inversedBy: 'reservations')]
+    #[Groups(['reservation:read','user:read'])]
     private Collection $idBook;
 
     #[ORM\ManyToOne(inversedBy: 'reservation')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['reservation:read'])]
     private ?User $user = null;
 
     public function __construct()

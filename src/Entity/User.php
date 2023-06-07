@@ -19,7 +19,7 @@ class User
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['user:read'])]
+    #[Groups(['user:read','reservation:read'])]
     private ?string $name = null;
 
     #[ORM\Column(length: 255)]
@@ -37,6 +37,7 @@ class User
     private ?string $password = null;
 
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Reservation::class)]
+    #[Groups(['user:read'])]
     private Collection $reservation;
 
     public function __construct()
