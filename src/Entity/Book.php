@@ -41,6 +41,7 @@ class Book
     private ?bool $isReserved = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['book:read'])]
     private ?string $url = null;
 
     public function getId(): ?int
