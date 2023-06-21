@@ -38,8 +38,10 @@ class Book
     private ?\DateTimeInterface $PublishingDate = null;
 
     #[ORM\Column]
-
     private ?bool $isReserved = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $url = null;
 
     public function getId(): ?int
     {
@@ -114,6 +116,18 @@ class Book
     public function setIsReserved(bool $isReserved): self
     {
         $this->isReserved = $isReserved;
+
+        return $this;
+    }
+
+    public function getUrl(): ?string
+    {
+        return $this->url;
+    }
+
+    public function setUrl(string $url): self
+    {
+        $this->url = $url;
 
         return $this;
     }
