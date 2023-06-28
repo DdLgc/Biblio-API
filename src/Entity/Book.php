@@ -10,21 +10,20 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: BookRepository::class)]
 #[ApiResource(normalizationContext: ['groups' => ['book:read']])]
-
 class Book
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['book:read','reservation:read'])]
+    #[Groups(['book:read', 'reservation:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['book:read','reservation:read','user:read'])]
+    #[Groups(['book:read', 'reservation:read', 'user:read'])]
     private ?string $title = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['book:read','reservation:read'])]
+    #[Groups(['book:read', 'reservation:read'])]
     private ?string $autor = null;
 
     #[ORM\Column(length: 255)]

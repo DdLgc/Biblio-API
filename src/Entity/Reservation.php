@@ -19,11 +19,11 @@ class Reservation
     #[ORM\Column]
     private ?int $id = null;
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    #[Groups(['reservation:read','book:read'])]
+    #[Groups(['reservation:read', 'book:read'])]
     private ?\DateTimeInterface $returnDateInitial = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    #[Groups(['reservation:read','book:read'])]
+    #[Groups(['reservation:read', 'book:read'])]
     private ?\DateTimeInterface $loanDate = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
@@ -31,7 +31,7 @@ class Reservation
     private ?\DateTimeInterface $reelReturnDate = null;
 
     #[ORM\ManyToMany(targetEntity: Book::class, inversedBy: 'reservations')]
-    #[Groups(['reservation:read','user:read'])]
+    #[Groups(['reservation:read', 'user:read'])]
     private Collection $idBook;
 
     #[ORM\ManyToOne(inversedBy: 'reservation')]
