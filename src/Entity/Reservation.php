@@ -17,6 +17,7 @@ class Reservation
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['reservation:read', 'book:read'])]
     private ?int $id = null;
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     #[Groups(['reservation:read', 'book:read'])]
@@ -120,5 +121,6 @@ class Reservation
 
         return $this;
     }
+
 
 }

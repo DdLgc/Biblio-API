@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\BookRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -37,11 +39,22 @@ class Book
     private ?\DateTimeInterface $PublishingDate = null;
 
     #[ORM\Column]
+    #[Groups(['book:read'])]
     private ?bool $isReserved = null;
 
     #[ORM\Column(length: 255)]
     #[Groups(['book:read'])]
     private ?string $url = null;
+
+
+    #[ORM\ManyToMany(targetEntity: Reservation::class, mappedBy: 'idBook')]
+    #[Groups(['book:read'])]
+    private Collection $reservations;
+
+    public function __construct()
+    {
+        $this->reservations = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -131,4 +144,33 @@ class Book
 
         return $this;
     }
+
+    /**
+     * @return Collection<int, Reservation>
+     */
+    public function getReservations(): Collection
+    {
+        return $this->reservations;
+    }
+
+    public function addReservation(Reservation $reservation): self
+    {
+        if (!$this->reservations->contains($reservation)) {
+            $this->reservations->add($reservation);
+            $reservation->addIdBook($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReservation(Reservation $reservation): self
+    {
+        if ($this->reservations->removeElement($reservation)) {
+            $reservation->removeIdBook($this);
+        }
+
+        return $this;
+    }
+
+
 }
