@@ -4,27 +4,28 @@ namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\BookRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: BookRepository::class)]
 #[ApiResource(normalizationContext: ['groups' => ['book:read']])]
-
 class Book
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['book:read','reservation:read'])]
+    #[Groups(['book:read', 'reservation:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['book:read','reservation:read','user:read'])]
+    #[Groups(['book:read', 'reservation:read', 'user:read'])]
     private ?string $title = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['book:read','reservation:read'])]
+    #[Groups(['book:read', 'reservation:read'])]
     private ?string $autor = null;
 
     #[ORM\Column(length: 255)]
@@ -38,8 +39,15 @@ class Book
     private ?\DateTimeInterface $PublishingDate = null;
 
     #[ORM\Column]
-
+    #[Groups(['book:read'])]
     private ?bool $isReserved = null;
+
+    #[ORM\Column(length: 255)]
+    #[Groups(['book:read'])]
+    private ?string $url = null;
+
+    #[ORM\ManyToOne(inversedBy: 'book')]
+    private ?Reservation $reservation = null;
 
     public function getId(): ?int
     {
@@ -117,4 +125,29 @@ class Book
 
         return $this;
     }
+
+    public function getUrl(): ?string
+    {
+        return $this->url;
+    }
+
+    public function setUrl(string $url): self
+    {
+        $this->url = $url;
+
+        return $this;
+    }
+
+    public function getReservation(): ?Reservation
+    {
+        return $this->reservation;
+    }
+
+    public function setReservation(?Reservation $reservation): self
+    {
+        $this->reservation = $reservation;
+
+        return $this;
+    }
+
 }
