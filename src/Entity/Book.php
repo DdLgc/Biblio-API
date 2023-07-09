@@ -46,15 +46,8 @@ class Book
     #[Groups(['book:read'])]
     private ?string $url = null;
 
-
-    #[ORM\ManyToMany(targetEntity: Reservation::class, mappedBy: 'idBook')]
-    #[Groups(['book:read'])]
-    private Collection $reservations;
-
-    public function __construct()
-    {
-        $this->reservations = new ArrayCollection();
-    }
+    #[ORM\ManyToOne(inversedBy: 'book')]
+    private ?Reservation $reservation = null;
 
     public function getId(): ?int
     {
@@ -145,32 +138,16 @@ class Book
         return $this;
     }
 
-    /**
-     * @return Collection<int, Reservation>
-     */
-    public function getReservations(): Collection
+    public function getReservation(): ?Reservation
     {
-        return $this->reservations;
+        return $this->reservation;
     }
 
-    public function addReservation(Reservation $reservation): self
+    public function setReservation(?Reservation $reservation): self
     {
-        if (!$this->reservations->contains($reservation)) {
-            $this->reservations->add($reservation);
-            $reservation->addIdBook($this);
-        }
+        $this->reservation = $reservation;
 
         return $this;
     }
-
-    public function removeReservation(Reservation $reservation): self
-    {
-        if ($this->reservations->removeElement($reservation)) {
-            $reservation->removeIdBook($this);
-        }
-
-        return $this;
-    }
-
 
 }
